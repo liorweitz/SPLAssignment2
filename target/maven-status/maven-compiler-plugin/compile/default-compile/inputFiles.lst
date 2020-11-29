@@ -1,5 +1,6 @@
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\messages\AttackEvent.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\Main.java
+C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\services\ServiceForTest.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\passiveObjects\Ewok.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\Future.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\passiveObjects\Attack.java
@@ -10,6 +11,7 @@ C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\MessageBus.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\services\HanSoloMicroservice.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\Message.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\MessageBusImpl.java
+C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\messages\BroadcastForTest.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\passiveObjects\Ewoks.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\services\LandoMicroservice.java
 C:\Users\liorw\IdeaProjects\SPL211\src\main\java\bgu\spl\mics\application\services\LeiaMicroservice.java

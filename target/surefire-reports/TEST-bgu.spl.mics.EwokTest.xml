@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.FutureTest" time="0" tests="4" errors="0" skipped="0" failures="4">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.EwokTest" time="0.031" tests="2" errors="0" skipped="0" failures="1">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -61,24 +61,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testGet" classname="bgu.spl.mics.FutureTest" time="0">
-    <failure message="expected: &lt;hello&gt; but was: &lt;null&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <hello> but was: <null>
-	at bgu.spl.mics.FutureTest.testGet(FutureTest.java:25)
-]]></failure>
-  </testcase>
-  <testcase name="testResolve" classname="bgu.spl.mics.FutureTest" time="0">
+  <testcase name="acquire" classname="bgu.spl.mics.EwokTest" time="0.016"/>
+  <testcase name="release" classname="bgu.spl.mics.EwokTest" time="0.015">
     <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at bgu.spl.mics.FutureTest.testResolve(FutureTest.java:34)
-]]></failure>
-  </testcase>
-  <testcase name="testIsDone" classname="bgu.spl.mics.FutureTest" time="0">
-    <failure message="expected: &lt;false&gt; but was: &lt;true&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
-	at bgu.spl.mics.FutureTest.testIsDone(FutureTest.java:39)
-]]></failure>
-  </testcase>
-  <testcase name="testGetWithTimeOut" classname="bgu.spl.mics.FutureTest" time="0">
-    <failure message="expected: &lt;false&gt; but was: &lt;true&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
-	at bgu.spl.mics.FutureTest.testGetWithTimeOut(FutureTest.java:47)
+	at bgu.spl.mics.EwokTest.release(EwokTest.java:31)
 ]]></failure>
   </testcase>
 </testsuite>

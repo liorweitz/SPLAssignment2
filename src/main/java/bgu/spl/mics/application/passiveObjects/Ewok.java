@@ -7,21 +7,21 @@ package bgu.spl.mics.application.passiveObjects;
  * You may add fields and methods to this class as you see fit (including public methods).
  */
 public class Ewok {
-	int serialNumber;
-	boolean available;
-	
-  
+    int serialNumber;
+    boolean available;
+
+
     /**
      * Acquires an Ewok
      */
-    public void acquire() {
-		
-    }
+    public void acquire() {}
 
     /**
      * release an Ewok
      */
-    public void release() {
-    	
+    public void release() {}
+
+    public boolean getAvailable(){
+        return this.available;
     }
 }

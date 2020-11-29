@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: bgu.spl.mics.MessageBusImplTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 4, Errors: 1, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in bgu.spl.mics.MessageBusImplTest
+registerTest  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at bgu.spl.mics.MessageBusImplTest.registerTest(MessageBusImplTest.java:44)
+
+completeTest  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at bgu.spl.mics.MessageBusImplTest.completeTest(MessageBusImplTest.java:111)
+
+sendBroadcastTest  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at bgu.spl.mics.MessageBusImplTest.sendBroadcastTest(MessageBusImplTest.java:96)
+
+sendEventTest  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at bgu.spl.mics.MessageBusImplTest.sendEventTest(MessageBusImplTest.java:79)
+
+subscribeBroadcastTest  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at bgu.spl.mics.MessageBusImplTest.subscribeBroadcastTest(MessageBusImplTest.java:63)
+
