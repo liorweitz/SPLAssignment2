@@ -46,54 +46,70 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
-		if (!eventToMicroMap.containsKey(type)){
-			eventToMicroMap.put(type, new ArrayList<>());
+		synchronized (eventToMicroMap) {
+			if (!eventToMicroMap.containsKey(type)) {
+				eventToMicroMap.put(type, new ArrayList<>());
+			}
+			(eventToMicroMap.get(type)).add(m);
 		}
-		(eventToMicroMap.get(type)).add(m);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
-		if (!broadcastToMicroMap.containsKey(type)){
-			broadcastToMicroMap.put(type,new ArrayList<MicroService>());
+		synchronized (broadcastToMicroMap) {
+			if (!broadcastToMicroMap.containsKey(type)) {
+				broadcastToMicroMap.put(type, new ArrayList<MicroService>());
+			}
+			(broadcastToMicroMap.get(type)).add(m);
 		}
-		(broadcastToMicroMap.get(type)).add(m);
     }
 
 	@Override @SuppressWarnings("unchecked")
 	public <T> void complete(Event<T> e, T result) {
-		eventToFutureMap.get(e).resolve(result);
-
+		synchronized (eventToFutureMap) {
+			eventToFutureMap.get(e).resolve(result);
+		}
 	}
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		if (broadcastToMicroMap.containsKey(b.getClass())){
-			for (MicroService m:broadcastToMicroMap.get(b.getClass())){
-				microToQMap.get(m).add(b);
+		synchronized (broadcastToMicroMap) {
+			synchronized (microToQMap) {
+				if (broadcastToMicroMap.containsKey(b.getClass())) {
+					for (MicroService m : broadcastToMicroMap.get(b.getClass())) {
+						microToQMap.get(m).add(b);
+					}
+				}
+				notifyAll();
 			}
 		}
 	}
 
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		if (eventToMicroMap.containsKey(e.getClass())) {
-			Future<T> future = new Future<>();
-			eventToFutureMap.put(e, future);
-			Integer robinCounter = roundRobinMap.get(e.getClass());
-			if (robinCounter==null){
-				roundRobinMap.put(e.getClass(),1);
-				robinCounter=1;
+		synchronized (eventToFutureMap) {
+			synchronized (eventToMicroMap) {
+				synchronized (microToQMap) {
+					if (eventToMicroMap.containsKey(e.getClass())) {
+						Future<T> future = new Future<>();
+						eventToFutureMap.put(e, future);
+						Integer robinCounter = roundRobinMap.get(e.getClass());
+						if (robinCounter == null) {
+							roundRobinMap.put(e.getClass(), 1);
+							robinCounter = 1;
+						}
+						ArrayList<MicroService> curr = eventToMicroMap.get(e.getClass());
+						MicroService willHandle = curr.get(robinCounter % curr.size());
+						microToQMap.get(willHandle).add(e);
+						robinCounter++;
+						roundRobinMap.put(e.getClass(), robinCounter);
+						notifyAll();
+						return future;
+					} else {
+						return null;
+					}
+				}
 			}
-			ArrayList<MicroService> curr=eventToMicroMap.get(e.getClass());
-			MicroService willHandle=curr.get(robinCounter%curr.size());
-			microToQMap.get(willHandle).add(e);
-			robinCounter++;
-			roundRobinMap.put(e.getClass(),robinCounter);
-			return future;
-		}
-		else{
-			return null;
 		}
 	}
 
@@ -103,29 +119,36 @@ public class MessageBusImpl implements MessageBus {
 	 */
 	@Override
 	public void register(MicroService m) {
-		microToQMap.put(m,new LinkedList<Message>());
+		synchronized (microToQMap) {
+			microToQMap.put(m, new LinkedList<Message>());
+		}
 	}
 
 	@Override
 	public void unregister(MicroService m) {
-		if(microToQMap.containsKey(m)){
-			Queue<Message> toBeDeleted=microToQMap.get(m);
-			toBeDeleted.clear();
-			microToQMap.remove(m);
+		synchronized (microToQMap) {
+			if (microToQMap.containsKey(m)) {
+				Queue<Message> toBeDeleted = microToQMap.get(m);
+				toBeDeleted.clear();
+				microToQMap.remove(m);
+			}
 		}
 	}
 
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {
-		if (!microToQMap.containsKey(m)){
-			throw new IllegalStateException("The Microservice is not registered.");
+		synchronized (microToQMap) {
+			if (!microToQMap.containsKey(m)) {
+				throw new IllegalStateException("The Microservice is not registered.");
+			} else {
+				try {
+					while (microToQMap.get(m).size() == 0)
+						wait();
+				} catch (InterruptedException ex) {
+					throw new InterruptedException();
+				}
+			}
+			return microToQMap.get(m).poll();
 		}
-		else{
-			try{
-				while(microToQMap.get(m).size()==0)
-					wait();
-			}catch(InterruptedException ex) {throw new InterruptedException();}
-		}
-		return microToQMap.get(m).poll();
 	}
 }
