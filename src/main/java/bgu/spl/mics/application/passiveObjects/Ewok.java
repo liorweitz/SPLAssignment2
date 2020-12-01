@@ -10,18 +10,23 @@ public class Ewok {
     int serialNumber;
     boolean available;
 
-
     /**
      * Acquires an Ewok
      */
-    public void acquire() {}
+    public void acquire() {
+        if(available == true)
+            available = false;
+    }
 
     /**
      * release an Ewok
      */
-    public void release() {}
+    public void release() {
+        if(available == false)
+            available = true;
+    }
 
-    public boolean getAvailable(){
+    public boolean isAvailable(){
         return this.available;
     }
 }

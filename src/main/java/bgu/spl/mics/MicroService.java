@@ -2,6 +2,12 @@ package bgu.spl.mics;
 
 import bgu.spl.mics.application.messages.AttackEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+import bgu.spl.mics.Callback;
+import bgu.spl.mics.application.*;
+import jdk.nashorn.internal.codegen.CompilerConstants;
+
 /**
  * The MicroService is an abstract class that any micro-service in the system
  * must extend. The abstract MicroService class is responsible to get and
@@ -22,13 +28,19 @@ import bgu.spl.mics.application.messages.AttackEvent;
  */
 public abstract class MicroService implements Runnable { 
     private final String name;
+    private MessageBusImpl MB;
+    private Map<Class<? extends Message>, Callback<? extends Message>> messageToCallbackMap;
+
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
+     * MessageBusImpl instance MB gets initialized.
      */
     public MicroService(String name) {
     	this.name=name;
+    	MB=MessageBusImpl.getInstance();
+    	messageToCallbackMap=new HashMap<>();
     }
 
     /**
@@ -53,7 +65,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-    	
+    	MB.subscribeEvent(type,this);
+    	messageToCallbackMap.put(type,callback);
     }
 
     /**
@@ -77,13 +90,15 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-    	
+    	MB.subscribeBroadcast(type,this);
+    	messageToCallbackMap.put(type,callback);
     }
 
     /**
      * Sends the event {@code e} using the message-bus and receive a {@link Future<T>}
      * object that may be resolved to hold a result. This method must be Non-Blocking since
      * there may be events which do not require any response and resolving.
+     * the final keyword says that this method cannot be overridden by subclasses.
      * <p>
      * @param <T>       The type of the expected result of the request
      *                  {@code e}
@@ -93,8 +108,7 @@ public abstract class MicroService implements Runnable {
      * 	       			null in case no micro-service has subscribed to {@code e.getClass()}.
      */
     protected final <T> Future<T> sendEvent(Event<T> e) {
-    	
-        return null; 
+    	return MB.sendEvent(e);
     }
 
     /**
@@ -104,7 +118,7 @@ public abstract class MicroService implements Runnable {
      * @param b The broadcast message to send
      */
     protected final void sendBroadcast(Broadcast b) {
-    	
+    	MB.sendBroadcast(b);
     }
 
     /**
@@ -118,7 +132,7 @@ public abstract class MicroService implements Runnable {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-    	
+    	MB.complete(e,result);
     }
 
     /**

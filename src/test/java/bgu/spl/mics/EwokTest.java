@@ -23,12 +23,12 @@ public class EwokTest {
     @Test
     public void acquire() {
         ewok.acquire();
-        assertFalse(ewok.getAvailable());
+        assertFalse(ewok.isAvailable());
     }
     @Test
     public void release() {
         ewok.release();
-        assertTrue(ewok.getAvailable());
+        assertTrue(ewok.isAvailable());
     }
 
 }

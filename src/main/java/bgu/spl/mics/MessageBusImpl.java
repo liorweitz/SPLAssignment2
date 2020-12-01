@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.services.ServiceForTest;
+
 import java.util.*;
 
 /**
@@ -42,10 +44,6 @@ public class MessageBusImpl implements MessageBus {
 		if (instance==null)
 			instance=new MessageBusImpl();
 		return instance;
-	}
-
-	public static void clear(){
-		instance=null;
 	}
 
 	@Override
@@ -131,7 +129,11 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public void unregister(MicroService m) {
 		synchronized (microToQMap) {
-			if (microToQMap.containsKey(m)) {
+			//deletion for tests.
+			if (m.getClass()== ServiceForTest.class){
+				instance=null;
+			}
+			else if (microToQMap.containsKey(m)) {
 				Queue<Message> toBeDeleted = microToQMap.get(m);
 				toBeDeleted.clear();
 				microToQMap.remove(m);
@@ -152,8 +154,8 @@ public class MessageBusImpl implements MessageBus {
 					throw new InterruptedException();
 				}
 			}
-			Message e2=microToQMap.get(m).poll();
-			return e2;
+//			Message e2=microToQMap.get(m).poll();
+			return microToQMap.get(m).poll();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.EwokTest" time="0.031" tests="2" errors="0" skipped="0" failures="1">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="bgu.spl.mics.EwokTest" time="0.041" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -18,7 +18,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_241\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\liorw\AppData\Local\Temp\surefire9200169942288549662\surefirebooter5732019432183242527.jar C:\Users\liorw\AppData\Local\Temp\surefire9200169942288549662 2020-11-29T12-46-57_788-jvmRun1 surefire5792072011749739643tmp surefire_04420400787935819074tmp"/>
+    <property name="sun.java.command" value="C:\Users\liorw\AppData\Local\Temp\surefire8791241394762722779\surefirebooter5322859573183251959.jar C:\Users\liorw\AppData\Local\Temp\surefire8791241394762722779 2020-12-01T16-32-09_779-jvmRun1 surefire8347641200628091334tmp surefire_029949387239440765tmp"/>
     <property name="surefire.test.class.path" value="C:\Users\liorw\IdeaProjects\SPL211\target\test-classes;C:\Users\liorw\IdeaProjects\SPL211\target\classes;C:\Users\liorw\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.6.0-M1\junit-jupiter-engine-5.6.0-M1.jar;C:\Users\liorw\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\liorw\.m2\repository\org\junit\platform\junit-platform-engine\1.6.0-M1\junit-platform-engine-1.6.0-M1.jar;C:\Users\liorw\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\liorw\.m2\repository\org\junit\platform\junit-platform-commons\1.6.0-M1\junit-platform-commons-1.6.0-M1.jar;C:\Users\liorw\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.6.0-M1\junit-jupiter-api-5.6.0-M1.jar;C:\Users\liorw\.m2\repository\com\google\code\gson\gson\2.8.6\gson-2.8.6.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\liorw"/>
@@ -31,7 +31,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\liorw\AppData\Local\Temp\surefire9200169942288549662\surefirebooter5732019432183242527.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\liorw\AppData\Local\Temp\surefire8791241394762722779\surefirebooter5322859573183251959.jar"/>
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_241\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_241\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_241\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -61,10 +61,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="acquire" classname="bgu.spl.mics.EwokTest" time="0.016"/>
-  <testcase name="release" classname="bgu.spl.mics.EwokTest" time="0.015">
-    <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at bgu.spl.mics.EwokTest.release(EwokTest.java:31)
-]]></failure>
-  </testcase>
+  <testcase name="acquire" classname="bgu.spl.mics.EwokTest" time="0.034"/>
+  <testcase name="release" classname="bgu.spl.mics.EwokTest" time="0"/>
 </testsuite>

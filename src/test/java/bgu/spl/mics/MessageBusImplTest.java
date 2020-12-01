@@ -4,26 +4,34 @@ import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.BroadcastForTest;
 import bgu.spl.mics.application.services.ServiceForTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * A simple Microservice class named ServiceForTest was made for testing
- * the MessageBugImpl class efficiently and simply.
+ * unregister is not tested. also, awaitMessage method is tested implicitly, meaning it is
+ * used almost in every test. so it is not tested explicitly.
  */
 public class MessageBusImplTest {
     private ServiceForTest m1;
     private ServiceForTest m2;
-    private MessageBusImpl MB;
+    private ServiceForTest m3;
+
+    MessageBusImpl MB=MessageBusImpl.getInstance();
+
 
     @BeforeEach
     public void setUp() {
         m1 = new ServiceForTest("test1");
         m2 = new ServiceForTest("test2");
-        MB=MessageBusImpl.getInstance();
-        MB.clear();
+        m3=new ServiceForTest("test3");
+    }
+
+    @AfterEach
+    public void TearDown(){
+        MB.unregister(m1);
     }
 
     /**
@@ -43,6 +51,7 @@ public class MessageBusImplTest {
         MB.sendEvent(e1);
         Event e2= (Event) MB.awaitMessage(m1);
         assertTrue(e1.equals(e2));
+
     }
 
     /**
@@ -51,9 +60,8 @@ public class MessageBusImplTest {
      */
     @Test
     public void subscribeBroadcastTest() throws InterruptedException {
+        MessageBusImpl MB=MessageBusImpl.getInstance();
         BroadcastForTest b1=new BroadcastForTest();
-        ServiceForTest m3=new ServiceForTest("test3");
-        MB.register(m1);
         MB.register(m2);
         MB.register(m3);
         MB.subscribeBroadcast(b1.getClass(),m2);
@@ -87,6 +95,7 @@ public class MessageBusImplTest {
      */
     @Test
     public void sendBroadcastTest() throws InterruptedException {
+        MessageBusImpl MB=MessageBusImpl.getInstance();
         BroadcastForTest b1=new BroadcastForTest();
         MB.register(m1);
         MB.register(m2);
@@ -104,6 +113,7 @@ public class MessageBusImplTest {
      */
     @Test
     public void completeTest(){
+        MessageBusImpl MB=MessageBusImpl.getInstance();
         AttackEvent e1=new AttackEvent();
         AttackEvent e2=new AttackEvent();
         Future<Boolean> future1=MB.sendEvent(e1);
