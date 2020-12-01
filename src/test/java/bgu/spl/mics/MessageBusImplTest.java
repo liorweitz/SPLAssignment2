@@ -23,6 +23,7 @@ public class MessageBusImplTest {
         m1 = new ServiceForTest("test1");
         m2 = new ServiceForTest("test2");
         MB=MessageBusImpl.getInstance();
+        MB.clear();
     }
 
     /**
@@ -39,7 +40,7 @@ public class MessageBusImplTest {
         AttackEvent e1=new AttackEvent();
         MB.register(m1);
         MB.subscribeEvent(e1.getClass(),m1);
-        m2.sendEvent(e1);
+        MB.sendEvent(e1);
         Event e2= (Event) MB.awaitMessage(m1);
         assertTrue(e1.equals(e2));
     }
@@ -57,7 +58,7 @@ public class MessageBusImplTest {
         MB.register(m3);
         MB.subscribeBroadcast(b1.getClass(),m2);
         MB.subscribeBroadcast(b1.getClass(),m3);
-        m1.sendBroadcast(b1);
+        MB.sendBroadcast(b1);
         BroadcastForTest b2= (BroadcastForTest) MB.awaitMessage(m2);
         BroadcastForTest b3= (BroadcastForTest) MB.awaitMessage(m3);
         assertTrue(b1.equals(b2));
@@ -91,6 +92,7 @@ public class MessageBusImplTest {
         MB.register(m2);
         MB.subscribeBroadcast(b1.getClass(),m1);
         MB.subscribeBroadcast(b1.getClass(),m2);
+        MB.sendBroadcast(b1);
         BroadcastForTest b2= (BroadcastForTest) MB.awaitMessage(m1);
         BroadcastForTest b3= (BroadcastForTest) MB.awaitMessage(m2);
         assertTrue(b1.equals(b2));

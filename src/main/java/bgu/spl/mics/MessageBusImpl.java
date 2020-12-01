@@ -44,6 +44,10 @@ public class MessageBusImpl implements MessageBus {
 		return instance;
 	}
 
+	public static void clear(){
+		instance=null;
+	}
+
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		synchronized (eventToMicroMap) {
@@ -80,16 +84,16 @@ public class MessageBusImpl implements MessageBus {
 						microToQMap.get(m).add(b);
 					}
 				}
-				notifyAll();
+				this.microToQMap.notifyAll();
 			}
 		}
 	}
 
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {
-		synchronized (eventToFutureMap) {
-			synchronized (eventToMicroMap) {
-				synchronized (microToQMap) {
+	public synchronized <T> Future<T>  sendEvent(Event<T> e) {
+//		synchronized (eventToFutureMap) {
+//			synchronized (eventToMicroMap) {
+//				synchronized (microToQMap) {
 					if (eventToMicroMap.containsKey(e.getClass())) {
 						Future<T> future = new Future<>();
 						eventToFutureMap.put(e, future);
@@ -108,9 +112,9 @@ public class MessageBusImpl implements MessageBus {
 					} else {
 						return null;
 					}
-				}
-			}
-		}
+//				}
+//			}
+//		}
 	}
 
 	/**
@@ -143,12 +147,13 @@ public class MessageBusImpl implements MessageBus {
 			} else {
 				try {
 					while (microToQMap.get(m).size() == 0)
-						wait();
+						this.microToQMap.wait();
 				} catch (InterruptedException ex) {
 					throw new InterruptedException();
 				}
 			}
-			return microToQMap.get(m).poll();
+			Message e2=microToQMap.get(m).poll();
+			return e2;
 		}
 	}
 }
