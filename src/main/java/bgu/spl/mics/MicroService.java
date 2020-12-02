@@ -4,6 +4,8 @@ import bgu.spl.mics.application.messages.AttackEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.application.*;
 import jdk.nashorn.internal.codegen.CompilerConstants;
@@ -28,8 +30,9 @@ import jdk.nashorn.internal.codegen.CompilerConstants;
  */
 public abstract class MicroService implements Runnable { 
     private final String name;
+    private AtomicBoolean more; //should it be atomic?
     private MessageBusImpl MB;
-    private Map<Class<? extends Message>, Callback<? extends Message>> messageToCallbackMap;
+    private Map<Class<? extends Message>, Callback> messageToCallbackMap;
 
 
     /**
@@ -41,6 +44,7 @@ public abstract class MicroService implements Runnable {
     	this.name=name;
     	MB=MessageBusImpl.getInstance();
     	messageToCallbackMap=new HashMap<>();
+    	more.set(true);
     }
 
     /**
@@ -145,7 +149,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-    	
+    	more.compareAndSet(true, false);
     }
 
     /**
@@ -162,6 +166,19 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-    	
+        initialize();
+    	while(more.get()){
+            try {
+                Message message=MB.awaitMessage(this);
+                messageToCallbackMap.get(message.getClass()).call(message.getClass());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    protected final void register(){
+        MB.register(this);
     }
 }
