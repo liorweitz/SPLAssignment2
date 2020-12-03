@@ -1,4 +1,6 @@
 package bgu.spl.mics.application.messages;
 
-public class FinishAttack {
+import bgu.spl.mics.Broadcast;
+
+public class FinishAttack implements Broadcast {
 }

@@ -3,6 +3,7 @@ package bgu.spl.mics.application.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.passiveObjects.Attack;
@@ -17,10 +18,14 @@ import bgu.spl.mics.application.passiveObjects.Attack;
  */
 public class LeiaMicroservice extends MicroService {
 	private Attack[] attacks;
+	private int successfulAttacks;
+	private ArrayList<Future> eventFutures;
 	
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
 		this.attacks = attacks;
+		successfulAttacks=0;
+		eventFutures=new ArrayList<>();
     }
 
     @Override
@@ -30,7 +35,7 @@ public class LeiaMicroservice extends MicroService {
 
     public void sendAttacks(){
         for(Attack attack:attacks){
-            sendEvent(new AttackEvent(attack.getSerials(),attack.getDuration()));
+            eventFutures.add(sendEvent(new AttackEvent(attack.getSerials(),attack.getDuration())));
         }
     }
 }

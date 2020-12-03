@@ -1,2 +1,4 @@
-package bgu.spl.mics.application.messages;public class FinishDeactivation {
+package bgu.spl.mics.application.messages;
+
+public class FinishDeactivation {
 }
