@@ -88,10 +88,10 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public synchronized <T> Future<T>  sendEvent(Event<T> e) {
-//		synchronized (eventToFutureMap) {
-//			synchronized (eventToMicroMap) {
-//				synchronized (microToQMap) {
+	public <T> Future<T>  sendEvent(Event<T> e) {
+		synchronized (eventToFutureMap) {
+			synchronized (eventToMicroMap) {
+				synchronized (microToQMap) {
 					if (eventToMicroMap.containsKey(e.getClass())) {
 						Future<T> future = new Future<>();
 						eventToFutureMap.put(e, future);
@@ -105,14 +105,14 @@ public class MessageBusImpl implements MessageBus {
 						microToQMap.get(willHandle).add(e);
 						robinCounter++;
 						roundRobinMap.put(e.getClass(), robinCounter);
-						notifyAll();
+						this.microToQMap.notifyAll();
 						return future;
 					} else {
 						return null;
 					}
-//				}
-//			}
-//		}
+				}
+			}
+		}
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class MessageBusImpl implements MessageBus {
 	public Message awaitMessage(MicroService m) throws InterruptedException {
 		synchronized (microToQMap) {
 			if (!microToQMap.containsKey(m)) {
-				throw new IllegalStateException("The Microservice is not registered.");
+				throw new IllegalStateException("The Microservice:"+ m.getName()+" is not registered.");
 			} else {
 				try {
 					while (microToQMap.get(m).size() == 0)

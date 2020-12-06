@@ -16,10 +16,6 @@ public class EwokTest {
     @AfterEach
     void tearDown(){}
 
-    public void setE() {
-        this.ewok = new Ewok();
-    }
-
     @Test
     public void acquire() {
         ewok.acquire();

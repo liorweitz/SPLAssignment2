@@ -1,4 +1,6 @@
 package bgu.spl.mics.application.messages;
 
-public class FinishBombing {
+import bgu.spl.mics.Broadcast;
+
+public class FinishBombing implements Broadcast {
 }
