@@ -19,7 +19,7 @@ public class MessageBusImplTest {
     private ServiceForTest m2;
     private ServiceForTest m3;
 
-    MessageBusImpl MB=MessageBusImpl.getInstance();
+    MessageBusImpl MB;
 
 
     @BeforeEach
@@ -27,6 +27,7 @@ public class MessageBusImplTest {
         m1 = new ServiceForTest("test1");
         m2 = new ServiceForTest("test2");
         m3=new ServiceForTest("test3");
+        MB=MessageBusImpl.getInstance();
     }
 
     @AfterEach
@@ -60,7 +61,6 @@ public class MessageBusImplTest {
      */
     @Test
     public void subscribeBroadcastTest() throws InterruptedException {
-        MessageBusImpl MB=MessageBusImpl.getInstance();
         BroadcastForTest b1=new BroadcastForTest();
         MB.register(m2);
         MB.register(m3);
@@ -95,7 +95,6 @@ public class MessageBusImplTest {
      */
     @Test
     public void sendBroadcastTest() throws InterruptedException {
-        MessageBusImpl MB=MessageBusImpl.getInstance();
         BroadcastForTest b1=new BroadcastForTest();
         MB.register(m1);
         MB.register(m2);
@@ -113,7 +112,8 @@ public class MessageBusImplTest {
      */
     @Test
     public void completeTest(){
-        MessageBusImpl MB=MessageBusImpl.getInstance();
+        MB.register(m1);
+        MB.subscribeEvent(AttackEvent.class,m1);
         AttackEvent e1=new AttackEvent();
         AttackEvent e2=new AttackEvent();
         Future<Boolean> future1=MB.sendEvent(e1);

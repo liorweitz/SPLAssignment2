@@ -183,6 +183,7 @@ public abstract class MicroService implements Runnable {
             }
 
         }
+    	MB.unregister(this);
     }
 
     protected final void register(){
