@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.application.*;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
@@ -33,6 +34,7 @@ public abstract class MicroService implements Runnable {
     private AtomicBoolean more; //should it be atomic?
     private MessageBusImpl MB;
     private Map<Class<? extends Message>, Callback> messageToCallbackMap;
+    protected Diary diary;
 
 
     /**
@@ -45,6 +47,7 @@ public abstract class MicroService implements Runnable {
     	MB=MessageBusImpl.getInstance();
     	messageToCallbackMap=new HashMap<>();
     	more=new AtomicBoolean(true);
+    	diary=Diary.getInstance();
     }
 
     /**

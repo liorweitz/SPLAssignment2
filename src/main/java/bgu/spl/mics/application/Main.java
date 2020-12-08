@@ -1,12 +1,11 @@
 package bgu.spl.mics.application;
 
-import bgu.spl.mics.application.passiveObjects.Attack;
-import bgu.spl.mics.application.passiveObjects.Ewoks;
-import bgu.spl.mics.application.passiveObjects.Input;
-import bgu.spl.mics.application.passiveObjects.JsonInputReader;
+import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.services.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Array;
@@ -35,15 +34,25 @@ public class Main {
 		Thread r2d2Thread=new Thread(r2d2);
 		Thread landoThread=new Thread(lando);
 
-
 		hansoloThread.start();
 		c3poThread.start();
 		r2d2Thread.start();
 		landoThread.start();
 		leiaThread.start();
 
+		try {
+			hansoloThread.join();
+			c3poThread.join();
+			r2d2Thread.join();
+			landoThread.join();
+			leiaThread.join();
+		} catch (InterruptedException e) {}
 
-
+		GsonBuilder builder=new GsonBuilder();
+		Gson gson=builder.create();
+		FileWriter writer=new FileWriter("output.json");
+		writer.write(gson.toJson(Diary.getInstance()));
+		writer.close();
 
 
 	}

@@ -7,7 +7,6 @@ import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Attack;
-import jdk.internal.org.objectweb.asm.tree.FieldInsnNode;
 
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvent}.
@@ -33,7 +32,7 @@ public class LeiaMicroservice extends MicroService {
     protected synchronized void initialize() {
         subscribeBroadcast(FinishAttack.class,(finishAttack)->{FinishedAttackRoutine();});
         subscribeBroadcast(FinishDeactivation.class,(finishDeactivation)->{deactivationFinished();});
-        subscribeBroadcast(FinishBombing.class,(finishBombing)->{termination();});
+        subscribeBroadcast(FinishBombing.class,(finishBombing)->{diary.setLeiaTerminate(System.currentTimeMillis());termination();});
         try {
             wait(5000);
         }catch(InterruptedException ex){}
@@ -47,7 +46,7 @@ public class LeiaMicroservice extends MicroService {
     }
 
     private void deactivationFinished() {
-        sendEvent(new BombDestroyerEvent());
+        eventFutures.add(sendEvent(new BombDestroyerEvent()));
         System.out.println("lando was called");
     }
 
@@ -63,5 +62,6 @@ public class LeiaMicroservice extends MicroService {
         for(Attack attack:attacks){
             eventFutures.add(sendEvent(new AttackEvent(attack.getSerials(),attack.getDuration())));
         }
+        sendBroadcast(new NoMoreAttacks());
     }
 }

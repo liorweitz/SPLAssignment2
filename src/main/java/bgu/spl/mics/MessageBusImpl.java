@@ -154,7 +154,6 @@ public class MessageBusImpl implements MessageBus {
 					throw new InterruptedException();
 				}
 			}
-//			Message e2=microToQMap.get(m).poll();
 			return microToQMap.get(m).poll();
 		}
 	}

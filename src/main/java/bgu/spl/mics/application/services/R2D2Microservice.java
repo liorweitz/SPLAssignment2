@@ -21,13 +21,20 @@ public class R2D2Microservice extends MicroService {
 
     @Override
     protected void initialize() {
-        subscribeEvent(DeactivationEvent.class,(deactivationEvent)->{deactivation();});
-        subscribeBroadcast(Terminate.class,(terminate)->terminate());
+        subscribeEvent(DeactivationEvent.class,(deactivationEvent)->{deactivation(deactivationEvent);});
+        subscribeBroadcast(Terminate.class,(terminate)->termination());
     }
 
-    private void deactivation() throws InterruptedException {
+    private void termination(){
+        diary.setR2D2Terminate(System.currentTimeMillis());
+        terminate();
+    }
+
+    private void deactivation(DeactivationEvent deactivationEvent) throws InterruptedException {
         Thread.sleep(duration);
         System.out.println("R2D2 Deactivating...");
+        diary.setR2D2Deactivate(System.currentTimeMillis());
         sendBroadcast(new FinishDeactivation());
+        complete(deactivationEvent,true);
     }
 }

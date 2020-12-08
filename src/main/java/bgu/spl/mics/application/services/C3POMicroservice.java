@@ -6,7 +6,9 @@ import bgu.spl.mics.MessageBusImpl;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.FinishAttack;
+import bgu.spl.mics.application.messages.NoMoreAttacks;
 import bgu.spl.mics.application.messages.Terminate;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
@@ -24,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class C3POMicroservice extends MicroService {
     Ewoks ewokSupplier;
+    private long finishAttacks;
 	
     public C3POMicroservice() {
         super("C3PO");
@@ -33,13 +36,14 @@ public class C3POMicroservice extends MicroService {
     @Override
     protected void initialize() {
         subscribeEvent(AttackEvent.class,(attackEvent)->{act(attackEvent);}); //how the compiler know the argument is appropriate?
-        subscribeBroadcast(Terminate.class,(terminate)->terminate());
+        subscribeBroadcast(NoMoreAttacks.class, (noMoreAttacks)->diary.setC3POFinish(finishAttacks));
+        subscribeBroadcast(Terminate.class,(terminate)->{diary.setC3POTerminate(System.currentTimeMillis());terminate();});
     }
 
     private void act(AttackEvent attackEvent) throws InterruptedException {
         acquireEwoks(attackEvent.getSerials());
         attack(attackEvent.getDuration());
-        BroadcastFinish(attackEvent.getSerials());
+        BroadcastFinish(attackEvent);
     }
 
     private void acquireEwoks(List<Integer> serials) throws InterruptedException {
@@ -55,9 +59,13 @@ public class C3POMicroservice extends MicroService {
         }
     }
 
-    private void BroadcastFinish(List<Integer> serials) {
-        Ewoks.getInstance().release(serials);
+    private void BroadcastFinish(AttackEvent attackEvent) {
+        Ewoks.getInstance().release(attackEvent.getSerials());
         sendBroadcast(new FinishAttack());
+        int prevAttacks;
+        diary.increaseTotalAttacks();
+        finishAttacks=System.currentTimeMillis();
+        complete(attackEvent,true);
         System.out.println(getName()+ " done the mission");
     }
 }

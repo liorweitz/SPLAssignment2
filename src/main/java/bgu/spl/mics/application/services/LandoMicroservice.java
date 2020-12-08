@@ -21,13 +21,14 @@ public class LandoMicroservice  extends MicroService {
 
     @Override
     protected void initialize() {
-       subscribeEvent(BombDestroyerEvent.class,(bombDestroyerEvent)->{startBombing();});
-       subscribeBroadcast(Terminate.class,(terminate)->terminate());
+       subscribeEvent(BombDestroyerEvent.class,(bombDestroyerEvent)->{startBombing(bombDestroyerEvent);});
+       subscribeBroadcast(Terminate.class,(terminate)->{diary.setLandoTerminate(System.currentTimeMillis());terminate();});
     }
 
-    private void startBombing() throws InterruptedException {
+    private void startBombing(BombDestroyerEvent bombDestroyerEvent) throws InterruptedException {
         Thread.sleep(duration);
         System.out.println("lando bombs");
         sendBroadcast(new FinishBombing());
+        complete(bombDestroyerEvent,true);
     }
 }

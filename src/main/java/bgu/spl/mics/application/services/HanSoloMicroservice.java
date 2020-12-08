@@ -4,6 +4,7 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.FinishAttack;
+import bgu.spl.mics.application.messages.NoMoreAttacks;
 import bgu.spl.mics.application.messages.Terminate;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
@@ -19,6 +20,8 @@ import java.util.List;
  */
 public class HanSoloMicroservice extends MicroService {
 
+    private long finishAttacks;
+
     public HanSoloMicroservice() {
         super("Han");
     }
@@ -27,13 +30,14 @@ public class HanSoloMicroservice extends MicroService {
     @Override
     protected void initialize() {
         subscribeEvent(AttackEvent.class,(attackEvent)->{act(attackEvent);});
-        subscribeBroadcast(Terminate.class,(terminate)->terminate());
+        subscribeBroadcast(NoMoreAttacks.class, (noMoreAttacks)->diary.setHanSoloFinish(finishAttacks));
+        subscribeBroadcast(Terminate.class,(terminate)->{diary.setHanSoloTerminate(System.currentTimeMillis());terminate();});
     }
 
     private void act(AttackEvent attackEvent) throws InterruptedException {
         acquireEwoks(attackEvent.getSerials());
         attack(attackEvent.getDuration());
-        BroadcastFinish(attackEvent.getSerials());
+        BroadcastFinish(attackEvent);
     }
 
     private void acquireEwoks(List<Integer> serials) throws InterruptedException {
@@ -49,10 +53,14 @@ public class HanSoloMicroservice extends MicroService {
         }
     }
 
-    private void BroadcastFinish(List<Integer> serials) {
-        Ewoks.getInstance().release(serials);
+    private void BroadcastFinish(AttackEvent attackEvent) {
+        Ewoks.getInstance().release(attackEvent.getSerials());
         sendBroadcast(new FinishAttack());
+        int prevAttacks;
+        diary.increaseTotalAttacks();
         System.out.println(getName()+ " done the mission");
+        finishAttacks=System.currentTimeMillis();
+        complete(attackEvent,true);
     }
 }
 
