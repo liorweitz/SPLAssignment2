@@ -19,7 +19,7 @@ import java.util.Properties;
  */
 public class Main {
 	public static void main(String[] args) throws IOException {
-		Input input= JsonInputReader.getInputFromJson("C:\\Users\\liorw\\IdeaProjects\\SPL211\\input.json");
+		Input input= JsonInputReader.getInputFromJson(args[0]);
 		Ewoks.getInstance().setEwoksArray(input.getEwoks());
 
 		LeiaMicroservice leia=new LeiaMicroservice(input.getAttacks());
@@ -50,7 +50,7 @@ public class Main {
 
 		GsonBuilder builder=new GsonBuilder();
 		Gson gson=builder.create();
-		FileWriter writer=new FileWriter("C:\\Users\\liorw\\IdeaProjects\\SPL211\\output.json");
+		FileWriter writer=new FileWriter(args[1]);
 		writer.write(gson.toJson(Diary.getInstance()));
 		writer.close();
 
