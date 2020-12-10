@@ -17,7 +17,10 @@ import java.util.List;
  * the serial number of the Ewok. for that we will store a "degenerate" id=0 Ewok in index zero.
  */
 public class Ewoks {
-    private static Ewoks instance=null;
+
+    private static class SingletonHolder{
+        private static Ewoks instance=new Ewoks();
+    }
     private ArrayList<Ewok> ewoksArray;
 
     private Ewoks(){
@@ -25,9 +28,7 @@ public class Ewoks {
     }
 
     public static Ewoks getInstance(){
-        if (instance==null)
-            instance=new Ewoks();
-        return instance;
+        return SingletonHolder.instance;
     }
 
     public void setEwoksArray(int numOfEwoks) {

@@ -35,7 +35,7 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-        subscribeEvent(AttackEvent.class,(attackEvent)->{act(attackEvent);}); //how the compiler know the argument is appropriate?
+        subscribeEvent(AttackEvent.class,(attackEvent)->{act(attackEvent);});
         subscribeBroadcast(NoMoreAttacks.class, (noMoreAttacks)->diary.setC3POFinish(finishAttacks));
         subscribeBroadcast(Terminate.class,(terminate)->{diary.setC3POTerminate(System.currentTimeMillis());terminate();});
     }
@@ -66,6 +66,5 @@ public class C3POMicroservice extends MicroService {
         diary.increaseTotalAttacks();
         finishAttacks=System.currentTimeMillis();
         complete(attackEvent,true);
-        System.out.println(getName()+ " done the mission");
     }
 }

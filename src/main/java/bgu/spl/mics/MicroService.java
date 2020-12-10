@@ -153,7 +153,6 @@ public abstract class MicroService implements Runnable {
      */
     protected final void terminate() {
     	more.compareAndSet(true, false);
-    	System.out.println(this.getName()+" is terminating");
     }
 
     /**
@@ -174,7 +173,6 @@ public abstract class MicroService implements Runnable {
         initialize();
     	while(more.get()){
             try {
-                System.out.println(this.getName()+" is here");
                 Message message=MB.awaitMessage(this);
                 messageToCallbackMap.get(message.getClass()).call(message);
 

@@ -1,5 +1,6 @@
 bgu\spl\mics\application\messages\NoMoreAttacks.class
 bgu\spl\mics\application\services\C3POMicroservice.class
+bgu\spl\mics\application\passiveObjects\Diary$SingletonHolder.class
 bgu\spl\mics\application\messages\AttackEvent.class
 bgu\spl\mics\application\services\LeiaMicroservice.class
 bgu\spl\mics\application\messages\Terminate.class
@@ -28,3 +29,4 @@ bgu\spl\mics\application\services\HanSoloMicroservice.class
 bgu\spl\mics\MessageBus.class
 bgu\spl\mics\MicroService.class
 bgu\spl\mics\application\Main.class
+bgu\spl\mics\application\passiveObjects\Diary$1.class

@@ -40,21 +40,18 @@ public class LeiaMicroservice extends MicroService {
     }
 
     private void termination() {
-        System.out.println("leia starts termination");
         sendBroadcast(new Terminate());
         terminate();
     }
 
     private void deactivationFinished() {
         eventFutures.add(sendEvent(new BombDestroyerEvent()));
-        System.out.println("lando was called");
     }
 
     private void FinishedAttackRoutine() {
         successfulAttacks++;
         if (successfulAttacks==attacks.length){
             eventFutures.add(sendEvent(new DeactivationEvent()));
-            System.out.println("sending DiactivationEvent");
         }
     }
 

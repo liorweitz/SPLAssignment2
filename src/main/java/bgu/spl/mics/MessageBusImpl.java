@@ -22,7 +22,9 @@ import java.util.*;
  */
 public class MessageBusImpl implements MessageBus {
 
-	private static MessageBusImpl instance=null;
+	private static class SingletonHolder{
+		private static MessageBusImpl instance=new MessageBusImpl();
+	}
 
 	//Map that stores the events queues of the Microservices, by Microservice
 	private Map<MicroService,Queue<Message>> microToQMap;
@@ -41,9 +43,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	public static MessageBusImpl getInstance(){
-		if (instance==null)
-			instance=new MessageBusImpl();
-		return instance;
+		return SingletonHolder.instance;
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class MessageBusImpl implements MessageBus {
 		synchronized (microToQMap) {
 			//deletion for tests.
 			if (m.getClass()== ServiceForTest.class){
-				instance=null;
+				SingletonHolder.instance=new MessageBusImpl();
 			}
 			else if (microToQMap.containsKey(m)) {
 				Queue<Message> toBeDeleted = microToQMap.get(m);

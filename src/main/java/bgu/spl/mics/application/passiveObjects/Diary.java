@@ -10,8 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Do not add to this class nothing but a single constructor, getters and setters.
  */
 public class Diary {
-    private static Diary instance=null;
-
     private int totalAttacks;
     private long HanSoloFinish;
     private long C3POFinish;
@@ -22,13 +20,14 @@ public class Diary {
     private long R2D2Terminate;
     private long LandoTerminate;
 
+    private static class SingletonHolder{
+        private static Diary instance=new Diary();
+    }
     private Diary(){
     }
 
     public static Diary getInstance(){
-        if (instance==null)
-            instance=new Diary();
-        return instance;
+        return SingletonHolder.instance;
     }
 
     public void setC3POFinish(long c3POFinish) {C3POFinish = c3POFinish;}

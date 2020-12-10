@@ -32,7 +32,6 @@ public class R2D2Microservice extends MicroService {
 
     private void deactivation(DeactivationEvent deactivationEvent) throws InterruptedException {
         Thread.sleep(duration);
-        System.out.println("R2D2 Deactivating...");
         diary.setR2D2Deactivate(System.currentTimeMillis());
         sendBroadcast(new FinishDeactivation());
         complete(deactivationEvent,true);

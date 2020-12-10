@@ -58,7 +58,6 @@ public class HanSoloMicroservice extends MicroService {
         sendBroadcast(new FinishAttack());
         int prevAttacks;
         diary.increaseTotalAttacks();
-        System.out.println(getName()+ " done the mission");
         finishAttacks=System.currentTimeMillis();
         complete(attackEvent,true);
     }

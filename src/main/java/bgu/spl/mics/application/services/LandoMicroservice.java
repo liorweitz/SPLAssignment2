@@ -27,7 +27,6 @@ public class LandoMicroservice  extends MicroService {
 
     private void startBombing(BombDestroyerEvent bombDestroyerEvent) throws InterruptedException {
         Thread.sleep(duration);
-        System.out.println("lando bombs");
         sendBroadcast(new FinishBombing());
         complete(bombDestroyerEvent,true);
     }
